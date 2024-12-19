@@ -23,7 +23,12 @@ jobs:
         source venv/bin/activate
         pip install -r requirements.txt
 
-    - name: Build and deploy
+    - name: Build site
+      run: |
+        source venv/bin/activate
+        make html  # This generates the static files into the 'output' directory
+
+    - name: Deploy to GitHub Pages
       run: |
         source venv/bin/activate
         ghp-import output -b gh-pages -p
