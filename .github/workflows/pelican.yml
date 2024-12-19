@@ -1,14 +1,36 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches:
+      - main
+
 jobs:
   deploy:
-    uses: "getpelican/pelican/.github/workflows/github_pages.yml@main"
-    permissions:
-      contents: "read"
-      pages: "write"
-      id-token: "write"
-    with:
-      settings: "publishconf.py"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.12
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+
+    - name: Build site
+      run: |
+        source venv/bin/activate
+        make html  # This generates the static files into the 'output' directory
+
+    - name: Deploy to GitHub Pages
+      run: |
+        source venv/bin/activate
+        ghp-import output -b gh-pages -p
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
