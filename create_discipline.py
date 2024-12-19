@@ -192,7 +192,7 @@ repository: {repository}
 
     if works:
         for work in works:
-            content += f"- [{work['title']}]({work['link']})\n"
+            content += f"- [{work['title']}]({work['link']})" + '{:target="_blank"}' + "\n"
     
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(content)

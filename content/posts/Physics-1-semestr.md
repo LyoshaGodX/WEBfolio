@@ -8,7 +8,7 @@ featured_image: https://th.bing.com/th/id/OIG2.a4wJ9MjDoqakbUzlDxh3?w=1024&h=102
 repository: https://disk.yandex.ru/d/QuEaqIb6KOJXKA
 
 ### Выполненные работы:
-- [Измерение линейных размеров и объемов твёрдых тел](https://disk.yandex.ru/i/LBoJB09uSJINNA)
-- [Определение циклической частоты колебания тела на пружине](https://disk.yandex.ru/i/TuKUfEQoeJKuiQ)
-- [Определение коэффициента вязкости жидкости методом Стокса](https://disk.yandex.ru/i/UrQbQBLn5ND-ow)
-- [ОПРЕДЕЛЕНИЕ КОЭФФИЦИЕНТА ПОВЕРХНОСТНОГО НАТЯЖЕНИЯ ЖИДКОСТИ МЕТОДОМ ОТРЫВА КОЛЬЦА](https://disk.yandex.ru/i/twUmsZrG8YOSZQ)
+- [Измерение линейных размеров и объемов твёрдых тел](https://disk.yandex.ru/i/LBoJB09uSJINNA){:target="_blank"}
+- [Определение циклической частоты колебания тела на пружине](https://disk.yandex.ru/i/TuKUfEQoeJKuiQ){:target="_blank"}
+- [Определение коэффициента вязкости жидкости методом Стокса](https://disk.yandex.ru/i/UrQbQBLn5ND-ow){:target="_blank"}
+- [ОПРЕДЕЛЕНИЕ КОЭФФИЦИЕНТА ПОВЕРХНОСТНОГО НАТЯЖЕНИЯ ЖИДКОСТИ МЕТОДОМ ОТРЫВА КОЛЬЦА](https://disk.yandex.ru/i/twUmsZrG8YOSZQ){:target="_blank"}
