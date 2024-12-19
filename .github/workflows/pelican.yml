@@ -31,9 +31,6 @@ jobs:
     - name: Deploy to GitHub Pages
       run: |
         source venv/bin/activate
-        git fetch origin main
-        git checkout main
-        git pull origin gh-pages  # Update gh-pages with the latest from main
         ghp-import output -b gh-pages -p
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
