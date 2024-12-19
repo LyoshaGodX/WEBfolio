@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1><strong>Дисциплина (проект) | </strong>{{ article.title }}</h1>
+        
+        <h4 class="article-summary">{{ article.summary }}</h4>
+        
+        <div class="content"  style="padding-top: 20px">
+            <hr style="border-width: thin; border-color: black">
+            <p>
+                <img src="theme/img/date.png" style="height:25px" class="icon">
+                <strong> | Дата проекта — </strong> {{ article.date|strftime('%Y') }}
+            </p>
+         
+            <p>
+                <img src="theme/img/skills.png" style="height:25px" class="icon">             
+                <strong> | Используемые навыки — </strong>
+                {% for tag in article.tags %}
+                    <a href="{{ SITEURL }}/{{ tag.slug }}.html">{{ tag }}</a>{% if not loop.last %} | {% endif %}
+                {% endfor %}
+            </p>
+
+            {% if  article.projectlink %}
+                <p>
+                    <a target="_blank" href="{{article.projectlink}}" class="icons">
+                        <img src="theme/img/link.png" style="height:25px" class="icon">
+                    </a>
+                    <strong> | Ссылка на проект — </strong>
+                    <a target="_blank" href="{{article.projectlink}}">{{article.projectlink}}</a>
+                </p>
+            {% endif %}
+         
+            {% if  article.repository %}
+                <p>
+                    <a target="_blank" href="{{article.repository}}" class="icons">
+                        <img src="theme/img/github.png" style="height:25px" class="icon">
+                    </a>
+                    <strong> | Репозиторий — </strong>
+                    <a target="_blank" href="{{article.repository}}">{{article.repository}}</a>
+                </p>
+            {% endif %}
+
+            <hr style="border-width: thin; border-color: black">
+
+            <p>{{ article.content }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

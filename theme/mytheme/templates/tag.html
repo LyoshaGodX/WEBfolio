@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }}{% endblock %}
+
+{% block content %}
+
+<h1><strong>Отсортировано по |</strong> {{tag}}</h1>
+    <br>
+
+    <hr style="border-width: thin; border-color: black">
+   
+    <h3>Проекты и дисциплины под данному фильтру:</h3>
+    <br>
+    <br>
+    
+    <div class="row">
+  {% for article in articles %}
+    {% if  loop.index0 is divisibleby 3 %}
+    </div>
+        <div class="row">
+    {% endif %}
+        
+    <div class="col-md-4">
+        {% if  article.featured_image %}
+        <div class="containertumb">
+            <a href="{{article.slug}}.html">
+                <img src="{{ article.featured_image }}" style="width:100%" class="tumb">
+                  <div class="middle">
+                      <div class="text"><h2>{{ article.title}}</h2>
+                      </div>
+                  </div>
+                <div class="middleback">
+                      <div class="middlebacktext">
+<!--                          <p><strong>Project Date: </strong>{{ article.date|strftime('%Y') }}</p>-->
+                          {% if  article.summary %}
+                          <p><strong>Суть</strong> {{article.summary}}</p>
+                          {% endif %}
+                          <hr>
+                          <p><strong>Навыки:</strong>
+                            {% for tag in article.tags %}
+                                {{ tag }}{% if not loop.last %} | {% endif %}
+                            {% endfor %}
+                          </p>
+                      </div>
+                  </div>
+            </a>
+        </div>
+        {% endif %}
+   <!--h2><a href="/{{ article.slug }}.html">{{ article.title }}</a></h2>
+   <label>Project Date: <strong>{{ article.date|strftime('%Y') }}</strong></label>
+   {{ article.content|truncate(3) }}-->
+<!--
+    {% if  loop.index0|float//3 ==2 and not(loop.index0==(articles|length)) %}
+    </div>
+    {% endif %}  
+-->
+            
+            
+    </div>
+        
+        
+  {% else %}
+   No projects found!
+  {% endfor %}
+    </div>
+
+{% endblock %}

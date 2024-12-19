@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+ <div class="col-md-12">
+     <h1><strong>{{page.title}} | </strong>{{ AUTHOR }}</h1>
+       
+{%if page.icons == "yes"%}
+     
+     <div class="content-small">
+         
+         <hr style="border-width: thin; border-color: black">
+     
+            <p><a href="mailto:alex0.oklem@gmail.com" class="icons">
+                <img src="theme/img/email.png" style="height:28px" class="icon"></a>
+             <strong> | Email — </strong> <a target="_blank" href="mailto:alex0.oklem@gmail.com">alex0.oklem@gmail.com</a></p>
+     
+              <p><a target="_blank" href="https://t.me/LyoshaGodX" class="icons">
+                <img src="theme/img/telegram.png" style="height:28px" class="icon"></a>
+             <strong> | Telegram — </strong> <a target="_blank" href="https://t.me/LyoshaGodX">https://t.me/LyoshaGodX</a></p>
+         
+            <p><a target="_blank" href="https://github.com/LyoshaGodX" class="icons">
+                <img src="theme/img/github.png" style="height:28px" class="icon"></a>
+             <strong> | GitHub — </strong> <a target="_blank" href="https://github.com/LyoshaGodX">https://github.com/LyoshaGodX</a></p>       
+         <hr style="border-width: thin; border-color: black">    
+     </div>
+{% endif %}
+     
+     <div class= "content" style="padding-top: 0px;">
+         <p>{{ page.content }}</p>
+     </div>
+     
+ </div>
+</div>
+{% endblock %}

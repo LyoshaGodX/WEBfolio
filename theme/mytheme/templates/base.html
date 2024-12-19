@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="theme/css/{{ CSS_FILE }}"/>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+    styles: {
+    ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+    },
+    tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+    });
+    </script>
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+
+<body>
+    
+    <title></title>
+    
+    <nav >
+    <div class="container" id="navbar">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">{{ SITENAME }}</a>
+        </div>
+        <ul class="nav navbar-nav">
+            {% for p in pages %}
+                <li><b>|</b></li>
+                <li{% if p == page %} class="active"{% endif %}>
+                    <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    </nav>
+
+    <div class="container" id="main">
+    {% block content %}{% endblock %}
+    </div>
+
+    <div class="container" id="footer">
+        <ul>
+            <li>
+                <a href="mailto:alex0.oklem@gmail.com">
+                    <img src="theme/img/email.png" style="height:28px" class="icon">
+                </a> 
+            
+            </li>   
+            <li><b>|</b></li>
+            <li>                
+                <a target="_blank" href="https://t.me/LyoshaGodX">
+                    <img src="theme/img/telegram.png" style="height:25px" class="icon">
+                </a> 
+            </li>
+            <li><b>|</b></li>
+                <li>
+                <a target="_blank" href="https://github.com/LyoshaGodX">
+                    <img src="theme/img/github.png" style="height:28px" class="icon">
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+</html>
