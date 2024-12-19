@@ -26,9 +26,9 @@ jobs:
     - name: Build and deploy
       run: |
         source venv/bin/activate
-        # Clear existing gh-pages
-        git branch -D gh-pages || true
-        git push origin --delete gh-pages || true
-        ghp-import -b gh-pages output -p
+        # Check if gh-pages exists, if not create it with ghp-import
+        git fetch origin gh-pages || git checkout --orphan gh-pages
+        git reset --hard HEAD
+        ghp-import output -b gh-pages -p
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
