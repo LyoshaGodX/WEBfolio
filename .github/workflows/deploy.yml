@@ -27,8 +27,9 @@ jobs:
       run: |
         source venv/bin/activate
         # Fetch latest changes from the repository
-        git fetch origin gh-pages || git checkout --orphan gh-pages
-        git reset --hard HEAD
+        git fetch origin main:main || git checkout main
+        git checkout main
+        git checkout -b gh-pages
         # Build and deploy the static files to the gh-pages branch
         ghp-import output -b gh-pages -p
       env:
