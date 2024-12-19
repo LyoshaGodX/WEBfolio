@@ -1,33 +1,17 @@
-name: Deploy to GitHub Pages
-
+name: Deploy
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.12
-
-    - name: Install dependencies
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
-
-    - name: Build and deploy
-      run: |
-        source venv/bin/activate
-        pelican content -s publishconf.py
-        gh-pages -d output
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
+  Deploy:
+    uses: seanh/ghp-pelican/.github/workflows/pelican.yml@main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      settings: "publishconf.py"
+      requirements: "-r requirements.txt"
+      python: "3.12"
