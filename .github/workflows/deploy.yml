@@ -26,11 +26,8 @@ jobs:
     - name: Build and deploy
       run: |
         source venv/bin/activate
-        # Fetch latest changes from the repository
-        git fetch origin main:main || git checkout main
-        git checkout main
-        git checkout -b gh-pages
-        # Build and deploy the static files to the gh-pages branch
-        ghp-import -n output
+        pelican content -s publishconf.py
+        gh-pages -d output
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
