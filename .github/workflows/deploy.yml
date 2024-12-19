@@ -26,4 +26,6 @@ jobs:
       run: pelican content -s publishconf.py
 
     - name: Deploy to GitHub Pages
+      env:
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       run: ghp-import output -b gh-pages -p
