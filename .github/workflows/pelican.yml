@@ -31,6 +31,7 @@ jobs:
     - name: Deploy to GitHub Pages
       run: |
         source venv/bin/activate
-        ghp-import output -b gh-pages -p
+        ghp-import -n -p -f output -b gh-pages
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
