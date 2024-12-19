@@ -26,9 +26,10 @@ jobs:
     - name: Build and deploy
       run: |
         source venv/bin/activate
-        # Check if gh-pages exists, if not create it with ghp-import
+        # Fetch latest changes from the repository
         git fetch origin gh-pages || git checkout --orphan gh-pages
         git reset --hard HEAD
+        # Build and deploy the static files to the gh-pages branch
         ghp-import output -b gh-pages -p
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
