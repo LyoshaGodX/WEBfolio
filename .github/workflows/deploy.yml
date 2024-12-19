@@ -6,26 +6,26 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        python-version: 3.x
+        python-version: 3.12
 
     - name: Install dependencies
       run: |
-        pip install pelican ghp-import
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
 
-    - name: Build site
-      run: pelican content -s publishconf.py
-
-    - name: Deploy to GitHub Pages
+    - name: Build and deploy
+      run: |
+        source venv/bin/activate
+        ghp-import output -b gh-pages -p
       env:
-        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      run: ghp-import output -b gh-pages -p
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
