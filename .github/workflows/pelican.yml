@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.12
 
@@ -22,11 +22,19 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
+        pip install ghp-import  # Ensure ghp-import is installed
+
+    - name: Update skills tags
+      run: |
+        source venv/bin/activate
+        python update_skills_tags.py
+        echo "✅ Skills tags updated"
 
     - name: Build site
       run: |
         source venv/bin/activate
         make html  # This generates the static files into the 'output' directory
+        echo "✅ Site built successfully"
 
     - name: Deploy to GitHub Pages
       run: |
