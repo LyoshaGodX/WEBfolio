@@ -8,6 +8,7 @@ featured_image: https://th.bing.com/th/id/OIG1.rji7350W9DUKBp0ROfx0?pid=ImgGn
 repository: https://disk.yandex.ru/d/OIvlC0S3Wu1bqw
 
 ### Выполненные работы:
+- тест!!!!
 - [Клементьев А.А. Тема 1. ВСР. Задание 1.2](https://disk.yandex.ru/i/nmcZa9JT_1ZSvQ){:target="_blank"}
 - [Клементьев А.А. Тема 1. ИСР. Задание 1.1](https://disk.yandex.ru/i/bl6Q1WCgDV7zOg){:target="_blank"}
 - [Клементьев А.А. Тема 1. ЛР. Задание 1.1](https://disk.yandex.ru/i/-LcfYqirMz1VCQ){:target="_blank"}
