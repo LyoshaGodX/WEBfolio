@@ -4,7 +4,7 @@ tags: 1 семестр, Физика, Математический анализ
 slug: Physics-1-semestr
 author: Алексей Клементьев
 summary: Методы работы с измерениями и погрешностями
-featured_image: https://th.bing.com/th/id/OIG2.a4wJ9MjDoqakbUzlDxh3?w=1024&h=1024&rs=1&pid=ImgDetMain
+featured_image: img\4.jpeg
 repository: https://disk.yandex.ru/d/QuEaqIb6KOJXKA
 
 ### Выполненные работы:

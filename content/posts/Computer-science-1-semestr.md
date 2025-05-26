@@ -4,7 +4,7 @@ tags: 1 семестр, Pascal, Программирование, Алгорит
 slug: Computer-science-1-semestr
 author: Алексей Клементьев
 summary: Обучение программирование на языке Pascal, реализация алгоритмов вычисления математических выражений
-featured_image: https://th.bing.com/th/id/OIG3.dGgs6dcKwN5a8xpGIxJg?w=1024&h=1024&rs=1&pid=ImgDetMain
+featured_image: img\2.jpeg
 repository: https://disk.yandex.ru/d/2PsKNvTGwvqrww
 
 ### Выполненные работы:

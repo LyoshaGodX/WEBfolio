@@ -1,14 +1,45 @@
 from flask import Flask, request, render_template_string
 import os
+import re
 
 app = Flask(__name__)
 
 # Путь к каталогу с файлами дисциплин
 DISCIPLINES_DIR = 'content/posts'
 
+def parse_all_tags():
+    """Собирает все уникальные теги из файлов дисциплин, кроме тегов-семестров."""
+    semester_tags = {f"{i} семестр" for i in range(1, 9)}
+    tags_set = set()
+    for fname in os.listdir(DISCIPLINES_DIR):
+        if fname.endswith('.md'):
+            with open(os.path.join(DISCIPLINES_DIR, fname), encoding='utf-8') as f:
+                for line in f:
+                    if line.strip().startswith('tags:'):
+                        tags_line = line.split(':', 1)[1].strip()
+                        tags = [t.strip() for t in tags_line.split(',')]
+                        tags_set.update(tags)
+                        break
+    # Исключаем семестровые теги и пустые строки
+    return sorted([t for t in tags_set if t and t not in semester_tags])
+
+def translit(text):
+    """Транслитерирует русский текст в латиницу для slug."""
+    # Простейшая таблица транслитерации
+    ru =   u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+    en =  ("a","b","v","g","d","e","e","zh","z","i","y","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","sch","","y","","e","yu","ya")
+    tr = {ord(r):e for r,e in zip(ru, en)}
+    tr.update({ord(r.upper()):e.capitalize() for r,e in zip(ru, en)})
+    text = text.translate(tr)
+    # Заменяем все не-буквы/цифры на "-"
+    import re
+    text = re.sub(r'[^a-zA-Z0-9]+', '-', text)
+    text = text.strip('-').lower()
+    return text
 
 @app.route('/')
 def index():
+    all_tags = parse_all_tags()
     return render_template_string("""
 <!DOCTYPE html>
 <html lang="en">
@@ -44,16 +75,16 @@ def index():
                 <input type="text" name="title" id="title" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="tags" class="form-label">Теги (навыки, ключевые слова через запятую):</label>
-                <input type="text" name="tags" id="tags" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="slug" class="form-label">URL slug:</label>
-                <input type="text" name="slug" id="slug" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="author" class="form-label">Автор:</label>
-                <input type="text" name="author" id="author" class="form-control" required>
+                <label class="form-label">Теги (выберите из существующих или добавьте новые):</label>
+                <div id="existing-tags" class="mb-2">
+                    {% for tag in all_tags %}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="existing_tags" value="{{ tag }}" id="tag-{{ loop.index }}">
+                            <label class="form-check-label" for="tag-{{ loop.index }}">{{ tag }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <input type="text" name="tags" id="tags" class="form-control" placeholder="Новые теги через запятую">
             </div>
             <div class="mb-3">
                 <label for="summary" class="form-label">Краткое описание:</label>
@@ -74,15 +105,6 @@ def index():
                     <span class="ms-3" id="semester-value">1</span>
                 </div>
             </div>
-            <div class="mb-4">
-                <label for="date" class="form-label">Год выполнения:</label>
-                <div class="d-flex align-items-center">
-                    <input type="range" id="date" name="date" class="form-range" min="2021" max="2025" step="1" value="2021">
-                    <span class="ms-3" id="date-value">2021</span>
-                </div>
-            </div>
-            
-
             <h3 class="mt-4">Работы:</h3>
             <div class="mb-3">
                 <label for="work-count" class="form-label">Количество работ:</label>
@@ -101,19 +123,12 @@ def index():
     document.addEventListener('DOMContentLoaded', function() {
         var semesterSlider = document.getElementById('semester');
         var semesterValue = document.getElementById('semester-value');
-        var dateSlider = document.getElementById('date');
-        var dateValue = document.getElementById('date-value');
         var worksContainer = document.getElementById('works-container');
         var generateWorksButton = document.getElementById('generate-works');
 
         // Обновляем отображение значения слайдера семестра
         semesterSlider.addEventListener('input', function() {
             semesterValue.textContent = semesterSlider.value;
-        });
-
-        // Обновляем отображение значения слайдера даты
-        dateSlider.addEventListener('input', function() {
-            dateValue.textContent = dateSlider.value;
         });
 
         generateWorksButton.addEventListener('click', function() {
@@ -148,19 +163,29 @@ def index():
 
 </body>
 </html>
-    """)
+    """, all_tags=parse_all_tags())
 
 
 @app.route('/create_discipline', methods=['POST'])
 def create_discipline():
     # Ввод данных
     title = request.form['title']
-    semester = request.form['semester']  # Включение семестра
-    tags = f"{semester} семестр, {request.form['tags']}".replace(", ", ", ")
-    date = request.form['date']
-    date = f"{date}.01.01"
-    slug = request.form['slug']
-    author = request.form['author']
+    semester = request.form['semester']
+    # Собираем выбранные чекбоксы
+    selected_tags = request.form.getlist('existing_tags')
+    # Новые теги из поля ввода
+    new_tags = [t.strip() for t in request.form['tags'].split(',') if t.strip()]
+    # Вычисляем год по семестру (1-2:2022, 3-4:2023, 5-6:2024, 7-8:2025)
+    sem = int(semester)
+    year = 2022 + (sem - 1) // 2
+    # Новое формирование даты
+    if sem % 2 == 1:
+        date = f"{year}.01.01"
+    else:
+        date = f"{year}.07.01"
+    # Генерируем slug автоматически
+    slug = f"{translit(title)}-{semester}sem"
+    author = "Клементьев Алексей Александрович"
     summary = request.form['summary']
     featured_image = request.form['featured_image']
     repository = request.form['repository']
@@ -178,6 +203,9 @@ def create_discipline():
     filename = os.path.join(DISCIPLINES_DIR, f"{slug}.md")
     
     # Формируем содержание файла
+    tags_list = [f"{semester} семестр"] + selected_tags + new_tags
+    tags = ', '.join(sorted(set([t for t in tags_list if t])))
+    
     content = f"""title: {title}
 date: {date}
 tags: {tags}

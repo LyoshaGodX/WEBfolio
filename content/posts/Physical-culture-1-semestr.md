@@ -4,7 +4,7 @@ tags: 1 семестр, Спорт, Копирайт
 slug: Physical-culture-1-semestr
 author: Алексей Клементьев
 summary: Исследовательские и практические работы по физической культуре. Исследование собственных возможностей и знакомство со сферами деятельности
-featured_image: https://th.bing.com/th/id/OIG3.ZjM82PB0VJbJb2YvSaZu?w=1024&h=1024&rs=1&pid=ImgDetMain
+featured_image: img\3.jpeg
 repository: https://disk.yandex.ru/d/8n5B4VlO7LgAqw
 
 ### Выполненные работы:
