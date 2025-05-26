@@ -37,9 +37,35 @@ def translit(text):
     text = text.strip('-').lower()
     return text
 
+def get_used_images():
+    """Возвращает множество имен файлов, которые уже используются в featured_image."""
+    used = set()
+    for fname in os.listdir(DISCIPLINES_DIR):
+        if fname.endswith('.md'):
+            with open(os.path.join(DISCIPLINES_DIR, fname), encoding='utf-8') as f:
+                for line in f:
+                    if line.strip().startswith('featured_image:'):
+                        img_path = line.split(':', 1)[1].strip()
+                        img_name = os.path.basename(img_path)
+                        if img_name:
+                            used.add(img_name)
+                        break
+    return used
+
+def get_unused_images():
+    """Возвращает список имен файлов из content/img, которые не используются ни в одном посте."""
+    img_dir = os.path.join('content', 'img')
+    if not os.path.exists(img_dir):
+        return []
+    all_imgs = [f for f in os.listdir(img_dir) if os.path.isfile(os.path.join(img_dir, f))]
+    used_imgs = get_used_images()
+    unused = [f for f in all_imgs if f not in used_imgs]
+    return sorted(unused)
+
 @app.route('/')
 def index():
     all_tags = parse_all_tags()
+    unused_images = get_unused_images()
     return render_template_string("""
 <!DOCTYPE html>
 <html lang="en">
@@ -91,8 +117,13 @@ def index():
                 <input type="text" name="summary" id="summary" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="featured_image" class="form-label">Изображение карточки (URL):</label>
-                <input type="text" name="featured_image" id="featured_image" class="form-control" required>
+                <label for="featured_image" class="form-label">Изображение карточки:</label>
+                <select name="featured_image" id="featured_image" class="form-select" required>
+                    <option value="" disabled selected>Выберите изображение</option>
+                    {% for img in unused_images %}
+                        <option value="img/{{ img }}">{{ img }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="mb-3">
                 <label for="repository" class="form-label">Репозиторий в GitHub (URL):</label>
@@ -163,7 +194,7 @@ def index():
 
 </body>
 </html>
-    """, all_tags=parse_all_tags())
+    """, all_tags=parse_all_tags(), unused_images=get_unused_images())
 
 
 @app.route('/create_discipline', methods=['POST'])
@@ -187,7 +218,7 @@ def create_discipline():
     slug = f"{translit(title)}-{semester}sem"
     author = "Клементьев Алексей Александрович"
     summary = request.form['summary']
-    featured_image = request.form['featured_image']
+    featured_image = request.form['featured_image']  # теперь это путь вида img/filename
     repository = request.form['repository']
     work_count = int(request.form['work_count'])
     
