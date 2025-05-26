@@ -111,10 +111,14 @@ def index():
                     {% endfor %}
                 </div>
                 <input type="text" name="tags" id="tags" class="form-control" placeholder="Новые теги через запятую">
-            </div>
-            <div class="mb-3">
+            </div>            <div class="mb-3">
                 <label for="summary" class="form-label">Краткое описание:</label>
                 <input type="text" name="summary" id="summary" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Подробное описание дисциплины:</label>
+                <textarea name="description" id="description" class="form-control" rows="5" placeholder="Детальное описание дисциплины, ее целей, задач и особенностей..."></textarea>
+                <div class="form-text">Этот блок будет размещен перед списком выполненных работ. Поле необязательное.</div>
             </div>
             <div class="mb-3">
                 <label for="featured_image" class="form-label">Изображение карточки:</label>
@@ -135,12 +139,14 @@ def index():
                     <input type="range" id="semester" name="semester" class="form-range" min="1" max="8" step="1" value="1">
                     <span class="ms-3" id="semester-value">1</span>
                 </div>
+            </div>            <h3 class="mt-4">Работы:</h3>
+            <div class="alert alert-info">
+                <strong>Примечание:</strong> Блок "Выполненные работы" необязателен к заполнению. Если вы не добавите работы, этот раздел будет пустым.
             </div>
-            <h3 class="mt-4">Работы:</h3>
             <div class="mb-3">
                 <label for="work-count" class="form-label">Количество работ:</label>
                 <div class="input-group">
-                    <input type="number" id="work-count" name="work_count" class="form-control" min="1" required>
+                    <input type="number" id="work-count" name="work_count" class="form-control" min="0" value="0">
                     <button type="button" id="generate-works" class="btn btn-secondary">Создать работы</button>
                 </div>
             </div>
@@ -157,12 +163,13 @@ def index():
         var worksContainer = document.getElementById('works-container');
         var generateWorksButton = document.getElementById('generate-works');
 
+        // Устанавливаем начальное значение при загрузке страницы
+        semesterValue.textContent = semesterSlider.value;
+
         // Обновляем отображение значения слайдера семестра
         semesterSlider.addEventListener('input', function() {
             semesterValue.textContent = semesterSlider.value;
-        });
-
-        generateWorksButton.addEventListener('click', function() {
+        });        generateWorksButton.addEventListener('click', function() {
             var workCount = document.getElementById('work-count').value;
             worksContainer.innerHTML = ''; // Очищаем предыдущие поля
             
@@ -176,17 +183,19 @@ def index():
                                 <h5 class="card-title">Работа ${i + 1}</h5>
                                 <div class="mb-3">
                                     <label class="form-label">Название работы:</label>
-                                    <input type="text" name="works[${i}][title]" class="form-control" required>
+                                    <input type="text" name="works[${i}][title]" class="form-control" placeholder="Лабораторная работа ${i + 1}">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Ссылка на работу:</label>
-                                    <input type="url" name="works[${i}][link]" class="form-control" required>
+                                    <input type="url" name="works[${i}][link]" class="form-control" placeholder="https://disk.yandex.ru/i/...">
                                 </div>
                             </div>
                         </div>
                     `;
                     worksContainer.appendChild(newWork);
                 }
+            } else {
+                worksContainer.innerHTML = '<div class="alert alert-secondary">Работы не будут добавлены в дисциплину.</div>';
             }
         });
     });
@@ -218,9 +227,10 @@ def create_discipline():
     slug = f"{translit(title)}-{semester}sem"
     author = "Клементьев Алексей Александрович"
     summary = request.form['summary']
+    description = request.form.get('description', '').strip()
     featured_image = request.form['featured_image']  # теперь это путь вида img/filename
     repository = request.form['repository']
-    work_count = int(request.form['work_count'])
+    work_count = int(request.form.get('work_count', 0))
     
     # Получение списка работ
     works = []
@@ -232,8 +242,7 @@ def create_discipline():
 
     # Формируем путь к файлу
     filename = os.path.join(DISCIPLINES_DIR, f"{slug}.md")
-    
-    # Формируем содержание файла
+      # Формируем содержание файла
     tags_list = [f"{semester} семестр"] + selected_tags + new_tags
     tags = ', '.join(sorted(set([t for t in tags_list if t])))
     
@@ -246,10 +255,15 @@ summary: {summary}
 featured_image: {featured_image}
 repository: {repository}
 
-### Выполненные работы:
 """
 
+    # Добавляем подробное описание, если оно есть
+    if description:
+        content += f"{description}\n\n"
+    
+    # Добавляем блок работ только если есть работы
     if works:
+        content += "### Выполненные работы:\n"
         for work in works:
             content += f"- [{work['title']}]({work['link']})" + '{:target="_blank"}' + "\n"
     
