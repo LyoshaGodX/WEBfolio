@@ -1,53 +1,71 @@
 {% extends "base.html" %}
 
-{% block title %}{{ article.title }}{% endblock %}
+{% block title %}{{ article.title }} — {{ SITENAME }}{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h1><strong>Дисциплина (проект) | </strong>{{ article.title }}</h1>
+    <!-- Article header -->
+    <header class="article-header">
+        <h1>{{ article.title }}</h1>
         
-        <h4 class="article-summary">{{ article.summary }}</h4>
+        {% if article.summary %}
+        <p class="project-summary">{{ article.summary }}</p>
+        {% endif %}
         
-        <div class="content"  style="padding-top: 20px">
-            <hr style="border-width: thin; border-color: black">
-            <p>
-                <img src="theme/img/date.png" style="height:25px" class="icon">
-                <strong> | Дата проекта — </strong> {{ article.date|strftime('%Y') }}
-            </p>
-         
-            <p>
-                <img src="theme/img/skills.png" style="height:25px" class="icon">             
-                <strong> | Используемые навыки — </strong>
-                {% for tag in article.tags %}
-                    <a href="{{ SITEURL }}/{{ tag.slug }}.html">{{ tag }}</a>{% if not loop.last %} | {% endif %}
-                {% endfor %}
-            </p>
-
-            {% if  article.projectlink %}
-                <p>
-                    <a target="_blank" href="{{article.projectlink}}" class="icons">
-                        <img src="theme/img/link.png" style="height:25px" class="icon">
-                    </a>
-                    <strong> | Ссылка на проект — </strong>
-                    <a target="_blank" href="{{article.projectlink}}">{{article.projectlink}}</a>
-                </p>
+        <div class="article-meta">
+            <div class="meta-item">
+                <img src="theme/img/date.png" alt="Дата" class="meta-icon">
+                <span>{{ article.date|strftime('%Y') }}</span>
+            </div>
+            
+            {% if article.tags %}
+            <div class="meta-item">
+                <img src="theme/img/skills.png" alt="Навыки" class="meta-icon">
+                <div class="project-tags">
+                    {% for tag in article.tags %}
+                        <a href="{{ SITEURL }}/{{ tag.slug }}.html" class="tag">{{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
             {% endif %}
-         
-            {% if  article.repository %}
-                <p>
-                    <a target="_blank" href="{{article.repository}}" class="icons">
-                        <img src="theme/img/github.png" style="height:25px" class="icon">
-                    </a>
-                    <strong> | Репозиторий — </strong>
-                    <a target="_blank" href="{{article.repository}}">{{article.repository}}</a>
-                </p>
+            
+            {% if article.projectlink %}
+            <div class="meta-item">
+                <img src="theme/img/link.png" alt="Ссылка" class="meta-icon">
+                <a href="{{ article.projectlink }}" target="_blank">Перейти к проекту</a>
+            </div>
             {% endif %}
-
-            <hr style="border-width: thin; border-color: black">
-
-            <p>{{ article.content }}</p>
+            
+            {% if article.repository %}
+            <div class="meta-item">
+                <img src="theme/img/github.png" alt="GitHub" class="meta-icon">
+                <a href="{{ article.repository }}" target="_blank">Репозиторий</a>
+            </div>
+            {% endif %}
         </div>
-    </div>
-</div>
+    </header>    <!-- Article content -->
+    <article class="article-content">
+        {{ article.content }}
+    </article>
+
+    <!-- Home button -->
+    <div class="home-button-container">
+        <a href="{{ SITEURL }}/index.html" class="home-button">
+            🏠 Вернуться на главную
+        </a>
+    </div><!-- Related articles -->
+    {% if article.tags %}
+    <section class="related-articles">
+        <h3>🔗 Похожие проекты</h3>
+        <div class="related-tags">
+            <p><strong>Изучите другие проекты по этим темам:</strong></p>
+            <div class="project-tags">
+                {% for tag in article.tags %}
+                    <a href="{{ SITEURL }}/{{ tag.slug }}.html" class="tag">
+                        🏷️ {{ tag }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 {% endblock %}

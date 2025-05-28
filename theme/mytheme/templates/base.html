@@ -2,69 +2,125 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="theme/css/{{ CSS_FILE }}"/>
-
+    
+    <!-- SEO and social media meta tags -->
+    <meta name="description" content="{% block description %}Портфолио {{ AUTHOR }} - проекты по программированию, веб-разработке и анализу данных{% endblock %}">
+    <meta name="keywords" content="портфолио, программирование, веб-разработка, Python, JavaScript, {{ AUTHOR }}">
+    <meta name="author" content="{{ AUTHOR }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ SITEURL }}/">
+    <meta property="og:title" content="{% block og_title %}{{ SITENAME }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Портфолио {{ AUTHOR }} - проекты по программированию, веб-разработке и анализу данных{% endblock %}">
+    <meta property="og:image" content="{{ SITEURL }}/theme/img/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ SITEURL }}/">
+    <meta property="twitter:title" content="{% block twitter_title %}{{ SITENAME }}{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Портфолио {{ AUTHOR }} - проекты по программированию, веб-разработке и анализу данных{% endblock %}">
+    <meta property="twitter:image" content="{{ SITEURL }}/theme/img/og-image.jpg">
+    
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <!-- Modern CSS -->
+    <link rel="stylesheet" type="text/css" href="theme/css/modern.css"/>
+    <link rel="stylesheet" type="text/css" href="theme/css/utilities.css"/>
+    <link rel="stylesheet" type="text/css" href="theme/css/enhanced.css"/>
+    <link rel="stylesheet" type="text/css" href="theme/css/performance.css"/>
+    
+    <!-- PWA manifest -->
+    <link rel="manifest" href="theme/manifest.json">
+    <meta name="theme-color" content="#38bdf8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="WEBfolio">
+    
+    <!-- MathJax for mathematical expressions -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
-    "HTML-CSS": {
-    styles: {
-    ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
-    },
-    tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+        "HTML-CSS": {
+            styles: {
+                ".MathJax .mo, .MathJax .mi": {color: "var(--text-color) ! important"}
+            }
+        },
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\\\(','\\\\)']],
+            processEscapes: true
+        }
     });
     </script>
-
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 
 <body>
+    <!-- Skip link for accessibility -->
+    <a href="#main" class="skip-link">Перейти к основному содержанию</a>
     
-    <title></title>
+    <!-- Scroll progress indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
     
-    <nav >
-    <div class="container" id="navbar">
-        <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">{{ SITENAME }}</a>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="nav-container">
+                <a href="index.html" class="logo">{{ SITENAME }}</a>
+                
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    ☰
+                </button>
+                
+                <ul class="nav-links">
+                    {% for p in pages %}
+                        <li>
+                            <a href="{{ SITEURL }}/{{ p.url }}"{% if p == page %} class="active"{% endif %}>
+                                {{ p.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+    </header>    <!-- Main content -->
+    <main id="main">
+        <div class="container">
+            {% block content %}{% endblock %}
         </div>
-        <ul class="nav navbar-nav">
-            {% for p in pages %}
-                <li><b>|</b></li>
-                <li{% if p == page %} class="active"{% endif %}>
-                    <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    </nav>
+    </main>
 
-    <div class="container" id="main">
-    {% block content %}{% endblock %}
-    </div>
+    <!-- Back to top button -->
+    <button class="back-to-top" id="back-to-top" title="Наверх">
+        ↑
+    </button>
 
-    <div class="container" id="footer">
-        <ul>
-            <li>
-                <a href="mailto:alex0.oklem@gmail.com">
-                    <img src="theme/img/email.png" style="height:28px" class="icon">
-                </a> 
-            
-            </li>   
-            <li><b>|</b></li>
-            <li>                
-                <a target="_blank" href="https://t.me/LyoshaGodX">
-                    <img src="theme/img/telegram.png" style="height:25px" class="icon">
-                </a> 
-            </li>
-            <li><b>|</b></li>
-                <li>
-                <a target="_blank" href="https://github.com/LyoshaGodX">
-                    <img src="theme/img/github.png" style="height:28px" class="icon">
-                </a>
-            </li>
-        </ul>
-    </div>
-    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <ul class="social-links">
+                    <li>
+                        <a href="mailto:alex0.oklem@gmail.com" title="Email">
+                            <img src="theme/img/email.png" alt="Email">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://t.me/LyoshaGodX" target="_blank" title="Telegram">
+                            <img src="theme/img/telegram.png" alt="Telegram">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/LyoshaGodX" target="_blank" title="GitHub">
+                            <img src="theme/img/github.png" alt="GitHub">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>    <!-- JavaScript for modern functionality -->
+    <script src="theme/js/modern.js"></script>
 </body>
 </html>

@@ -1,75 +1,86 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }}{% endblock %}
+{% block title %}{{ SITENAME }} — {{ AUTHOR }}{% endblock %}
 
 {% block content %}
-    <h1><strong>{{ SITENAME }} |</strong> {{AUTHOR}}</h1>
-    <hr style="border-width: thin; border-color: black">
-    <div class="intro" style="padding-top: 1rem; padding-bottom: 1rem;">
+    <!-- Hero section -->
+    <section class="hero">
+        <h1>{{ SITENAME }}</h1>
         <p class="lead">
-            Меня зовут <strong>Алексей Клементьев</strong>, и это мой персональный сайт-портфолио. Здесь вы найдёте проекты, которыми я горжусь (и не очень), а также узнаете больше о моём опыте и навыках.
+            Меня зовут <strong>{{ AUTHOR }}</strong>, и это мой персональный сайт-портфолио. 
+            Здесь вы найдёте проекты, которыми я горжусь, а также узнаете больше о моём опыте и навыках.
         </p>
         <p>
-            Моя цель — создавать уникальные решения, которые вдохновляют и приносят пользу. Благодарю за посещение, и я буду рад вашему мнению. Вы можете его оставить, спустившись в футер 👇 или на странице Я не Я 👆!
-        </p>
-    </div>    <hr style="border-width: thin; border-color: black">
-    <h1><strong>Дисциплины |</strong> Проекты</h1>
-    
-    <h3><strong>Семестры:</strong></h3>
-    <p>
-    {% for tag in TAGS %}
-        {% set formatted_tag = tag.split()[0] + '-semestr' %}
-        <a href="{{ SITEURL }}/{{ formatted_tag }}.html">{{ tag }}</a>
-        {% if not loop.last %} | {% endif %}
-    {% endfor %}
-    </p>
-      <h3><strong>Навыки и технологии:</strong></h3>
-    <p>
-    {% for skill in SKILLS_TAGS %}
-        <a href="{{ SITEURL }}/{{ skill|transliterate_slug }}.html">{{ skill }}</a>
-        {% if not loop.last %} | {% endif %}
-    {% endfor %}
-    </p>
-    <hr style="border-width: thin; border-color: black">
-    <br>
-    
-    <div class="row">
-        {% for article in articles[:9] %}
-            {% if loop.index0 is divisibleby 3 %}
+            Моя цель — создавать уникальные решения, которые вдохновляют и приносят пользу. 
+            Благодарю за посещение, и я буду рад вашему мнению!
+        </p>    </section>
+
+    <!-- Filters section -->
+    <section class="filters">
+        <div class="filter-group">
+            <h3 class="filter-title">Семестры</h3>
+            <div class="filter-links">
+                {% for tag in TAGS %}
+                    {% set formatted_tag = tag.split()[0] + '-semestr' %}
+                    <a href="{{ SITEURL }}/{{ formatted_tag }}.html">{{ tag }}</a>
+                {% endfor %}
             </div>
-                <div class="row">
-            {% endif %}
-            
-            <div class="col-md-4 mb-4">
+        </div>
+        
+        <div class="filter-group">
+            <h3 class="filter-title">Навыки и технологии</h3>
+            <div class="filter-links">
+                {% for skill in SKILLS_TAGS %}
+                    <a href="{{ SITEURL }}/{{ skill|transliterate_slug }}.html">{{ skill }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>    <!-- Projects section -->
+    <section>
+        <h2 class="text-center mb-4">Дисциплины и Проекты</h2>
+        
+        <!-- Search functionality -->
+        <div class="search-container">
+            <input type="text" 
+                   id="search" 
+                   class="search-input" 
+                   placeholder="Поиск проектов по названию, описанию или навыкам...">
+            <span class="search-icon">🔍</span>
+        </div>
+          <div class="projects-grid">
+            {% for article in articles %}
                 {% if article.featured_image %}
-                <div class="containertumb">
+                <article class="project-card">
                     <a href="{{ article.slug }}.html">
-                        <img src="{{ article.featured_image }}" class="tumb img-fluid" alt="{{ article.title }}">
-                        <div class="middle">
-                            <div class="text">
-                                <h2>{{ article.title }}</h2>
+                        <img src="{{ article.featured_image }}" 
+                             alt="{{ article.title }}" 
+                             class="project-image">
+                        
+                        <div class="project-content">
+                            <h3 class="project-title">{{ article.title }}</h3>
+                            
+                            {% if article.summary %}
+                            <p class="project-summary">{{ article.summary }}</p>
+                            {% endif %}
+                            
+                            <div class="project-tags">
+                                {% for tag in article.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
                             </div>
-                        </div>
-                        <div class="middleback">
-                            <div class="middlebacktext">
-                                {% if article.summary %}
-                                <p><strong>Суть</strong> {{ article.summary }}</p>
-                                {% endif %}
-                                <hr>
-                                <p><strong>Навыки:</strong>
-                                    {% for tag in article.tags %}
-                                        {{ tag }}{% if not loop.last %} | {% endif %}
-                                    {% endfor %}
-                                </p>
+                            
+                            <div class="project-meta">
+                                <span class="text-light">{{ article.date|strftime('%Y') }}</span>
                             </div>
                         </div>
                     </a>
-                </div>
+                </article>
                 {% endif %}
-            </div>
-        {% else %}
-            <p>Пока нет проектов...</p>
-        {% endfor %}
-    </div>
-
+            {% else %}
+                <div class="text-center">
+                    <p>Пока нет проектов...</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}

@@ -1,67 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}{{ SITENAME }}{% endblock %}
+{% block title %}{{ tag }} — {{ SITENAME }}{% endblock %}
 
 {% block content %}
-
-<h1><strong>Отсортировано по |</strong> {{tag}}</h1>
-    <br>
-
-    <hr style="border-width: thin; border-color: black">
-   
-    <h3>Проекты и дисциплины под данному фильтру:</h3>
-    <br>
-    <br>
-    
-    <div class="row">
-  {% for article in articles %}
-    {% if  loop.index0 is divisibleby 3 %}
-    </div>
-        <div class="row">
-    {% endif %}
-        
-    <div class="col-md-4">
-        {% if  article.featured_image %}
-        <div class="containertumb">
-            <a href="{{article.slug}}.html">
-                <img src="{{ article.featured_image }}" style="width:100%" class="tumb">
-                  <div class="middle">
-                      <div class="text"><h2>{{ article.title}}</h2>
-                      </div>
-                  </div>
-                <div class="middleback">
-                      <div class="middlebacktext">
-<!--                          <p><strong>Project Date: </strong>{{ article.date|strftime('%Y') }}</p>-->
-                          {% if  article.summary %}
-                          <p><strong>Суть</strong> {{article.summary}}</p>
-                          {% endif %}
-                          <hr>
-                          <p><strong>Навыки:</strong>
-                            {% for tag in article.tags %}
-                                {{ tag }}{% if not loop.last %} | {% endif %}
-                            {% endfor %}
-                          </p>
-                      </div>
-                  </div>
-            </a>
+    <!-- Tag header -->
+    <header class="tag-header">
+        <h1>Проекты по теме: {{ tag }}</h1>
+        <p>Все проекты и дисциплины, связанные с данной темой</p>
+        <div class="tag-stats">
+            Найдено проектов: {{ articles|length }}
         </div>
-        {% endif %}
-   <!--h2><a href="/{{ article.slug }}.html">{{ article.title }}</a></h2>
-   <label>Project Date: <strong>{{ article.date|strftime('%Y') }}</strong></label>
-   {{ article.content|truncate(3) }}-->
-<!--
-    {% if  loop.index0|float//3 ==2 and not(loop.index0==(articles|length)) %}
-    </div>
-    {% endif %}  
--->
-            
-            
-    </div>
-        
-        
-  {% else %}
-   No projects found!
-  {% endfor %}
-    </div>
+    </header>
 
+    <!-- Projects grid -->
+    <section>
+        <div class="projects-grid">
+            {% for article in articles %}
+                {% if article.featured_image %}
+                <article class="project-card">
+                    <a href="{{ article.slug }}.html">
+                        <img src="{{ article.featured_image }}" 
+                             alt="{{ article.title }}" 
+                             class="project-image">
+                        
+                        <div class="project-content">
+                            <h3 class="project-title">{{ article.title }}</h3>
+                            
+                            {% if article.summary %}
+                            <p class="project-summary">{{ article.summary }}</p>
+                            {% endif %}
+                            
+                            <div class="project-tags">
+                                {% for tag in article.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="project-meta">
+                                <span class="text-light">{{ article.date|strftime('%Y') }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                {% endif %}
+            {% else %}
+                <div class="text-center">
+                    <p>Проекты по данной теме не найдены.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="article-navigation text-center">
+        <a href="index.html" class="tag">← Вернуться к главной</a>
+    </nav>
 {% endblock %}
