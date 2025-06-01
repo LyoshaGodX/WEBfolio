@@ -1,0 +1,39 @@
+{
+    "name": "WEBfolio - Алексей Клементьев",
+    "short_name": "WEBfolio",
+    "description": "Портфолио Алексея Клементьева - проекты по программированию и веб-разработке",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#38bdf8",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "theme/img/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "theme/img/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "categories": ["portfolio", "education", "programming"],
+    "lang": "ru",
+    "scope": "/",
+    "screenshots": [
+        {
+            "src": "theme/img/screenshot-wide.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "theme/img/screenshot-narrow.png",
+            "sizes": "720x1280",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ]
+}
