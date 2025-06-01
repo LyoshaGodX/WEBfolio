@@ -70,6 +70,26 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Fix for project tags alignment in meta-item */
+.meta-item .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin: 0;
+}
+
+/* Ensure tags in meta-item have proper styling */
+.meta-item .project-tags .tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 0.25rem 0.75rem;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
 .meta-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -92,6 +112,7 @@
     height: 24px;
     opacity: 0.8;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    flex-shrink: 0;
 }
 
 /* Enhanced Article Content */

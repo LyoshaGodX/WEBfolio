@@ -35,5 +35,43 @@
     <!-- Page content -->
     <article class="article-content">
         {{ page.content }}
-    </article>
+    </article>    <div class="projects-grid">
+    {% set selected_articles = [
+        'kursovaya-rabota-razrabotka-sayta-portfolio-s-ispolzovaniem-staticheskogo-generatora-saytov-i-avtomatizatsiey-publikatsii-na-osnove-ci-cd-platformy-7sem',
+        'kursovaya-rabota-modelirovanie-rasprostraneniya-covid-19-na-osnove-sir-podobnyh-modeley-4sem',
+        'matematicheskie-osnovy-glubokogo-obucheniya-6sem',
+        'matematicheskie-osnovy-kompyuternoy-grafiki-5sem',
+        'prognozirovanie-sredney-nominalnoy-zarabotnoy-platy-5sem',
+        'statya-6sem'
+    ] %}
+    {% for article in articles %}
+        {% if article.slug in selected_articles and article.featured_image %}        <article class="project-card">
+            <a href="{{ article.slug }}.html">
+                <img src="{{ article.featured_image }}" 
+                     alt="{{ article.title }}" 
+                     class="project-image">
+                
+                <div class="project-content">
+                    <h3 class="project-title">{{ article.title }}</h3>
+                    
+                    {% if article.summary %}
+                    <p class="project-summary">{{ article.summary }}</p>
+                    {% endif %}
+                    
+                    <div class="project-tags">
+                        {% for tag in article.tags %}
+                            <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="text-light">{{ article.date|strftime('%Y') }}</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {% endif %}
+    {% endfor %}
+</div>
+
 {% endblock %}
