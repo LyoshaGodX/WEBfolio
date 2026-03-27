@@ -3,10 +3,192 @@
 {% block title %}{{ SITENAME }} — {{ AUTHOR }}{% endblock %}
 
 {% block content %}
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-visual">
+                <div class="hero-avatar-wrapper">
+                    <img src="img/profile.jpg" alt="{{ AUTHOR }}" class="hero-avatar-image">
+                    <div class="avatar-decoration"></div>
+                </div>
+            </div>
+            
+            <div class="hero-text">
+                
+                <h1 class="hero-title">
+                    Привет, я <strong>{{ AUTHOR }}</strong>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Полнофункциональный разработчик, аналитик данных и исследователь. 
+                    Я создаю умные решения, анализирую данные и решаю сложные задачи.
+                </p>
+                
+                <div class="hero-cta">
+                    <a href="mailto:alex0.oklem@gmail.com" class="btn btn-primary">Свяжитесь со мной</a>
+                    <a href="#projects" class="btn btn-secondary">Посмотреть проекты</a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">{{ articles|length }}</div>
+                        <div class="stat-label">Проектов</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">{{ SKILLS_TAGS|length }}</div>
+                        <div class="stat-label">Технологий</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">{{ TAGS|length }}</div>
+                        <div class="stat-label">Семестров</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills and Technologies Section -->
+    <section class="highlights-section">
+        <div class="section-header">
+            <h2>Мои основные направления</h2>
+            <p>Технологии и навыки, которые я использую</p>
+        </div>
+        
+        <div class="highlights-grid">
+            <!-- Web Development -->
+            <div class="highlight-card">
+                <div class="highlight-icon">💻</div>
+                <h3>Веб-разработка</h3>
+                <p>Создаю красивые и функциональные веб-приложения с использованием современных технологий</p>
+                <div class="highlight-tags">
+                    {% for skill in SKILLS_TAGS[:3] %}
+                        <span class="mini-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Data Science -->
+            <div class="highlight-card">
+                <div class="highlight-icon">📊</div>
+                <h3>Анализ данных</h3>
+                <p>Преобразую данные в полезные инсайты с помощью статистики и машинного обучения</p>
+                <div class="highlight-tags">
+                    {% for skill in ['Data science', 'Машинное обучение', 'Визуализация данных'] if skill in SKILLS_TAGS %}
+                        <span class="mini-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Programming -->
+            <div class="highlight-card">
+                <div class="highlight-icon">⚙️</div>
+                <h3>Программирование</h3>
+                <p>Пишу чистый, эффективный код, решаю алгоритмические задачи и оптимизирую системы</p>
+                <div class="highlight-tags">
+                    {% for skill in ['Программирование', 'Алгоритмы', 'Серверные технологии'] if skill in SKILLS_TAGS %}
+                        <span class="mini-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Research Project Section -->
+    <section class="thesis-section">
+        <div class="section-header">
+            <div class="thesis-badge">🎓 Текущий проект</div>
+            <h2>Магистерская диссертация</h2>
+        </div>
+        
+        <div class="thesis-container">
+            <div class="thesis-main">
+                <div class="thesis-content">
+                    <h3 class="thesis-title">
+                        Генеративный ИИ в контексте успеваемости и академической честности в образовательных организациях
+                    </h3>
+                    
+                    <p class="thesis-description">
+                        Исследование влияния использования генеративного ИИ на успеваемость студентов и академическую честность, 
+                        а также описание практик использования в образовательных организациях.
+                    </p>
+                    
+                    <div class="thesis-goal">
+                        <h4>🎯 Цель исследования</h4>
+                        <p>
+                            Выявить влияние генеративного ИИ на успеваемость и академическую честность, 
+                            описать сложившиеся практики и сопоставить данные из разных источников.
+                        </p>
+                    </div>
+                    
+                    <div class="thesis-questions">
+                        <h4>❓ Основные вопросы</h4>
+                        <ul>
+                            <li><strong>Кто и как</strong> использует ИИ в учебных задачах (роли, частота, виды задач)</li>
+                            <li><strong>Какие эффекты</strong> на оценки и компетенции зафиксированы в исследованиях</li>
+                            <li><strong>Какие практики</strong> честности сложились у студентов и преподавателей</li>
+                            <li><strong>Что обещают</strong> компании-разработчики ИИ и как это соотносится с фактами</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="thesis-methodology">
+                    <h4>📊 Дизайн исследования (4 потока)</h4>
+                    <div class="methodology-grid">
+                        <div class="methodology-card">
+                            <div class="methodology-number">1</div>
+                            <h5>Обзор научных работ</h5>
+                            <p>2022–2025 по обучению, оцениванию и академической честности</p>
+                        </div>
+                        <div class="methodology-card">
+                            <div class="methodology-number">2</div>
+                            <h5>Опрос</h5>
+                            <p>Студентов и преподавателей о частоте, задачах и условиях использования</p>
+                        </div>
+                        <div class="methodology-card">
+                            <div class="methodology-number">3</div>
+                            <h5>Интервью</h5>
+                            <p>Полуструктурированные для выявления типичных ситуаций</p>
+                        </div>
+                        <div class="methodology-card">
+                            <div class="methodology-number">4</div>
+                            <h5>Анализ материалов</h5>
+                            <p>Компаний-разработчиков ИИ: обещания и реальность</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="thesis-stats">
+                <div class="thesis-stat-item">
+                    <div class="stat-badge">📚</div>
+                    <div class="stat-text">
+                        <div class="stat-value">4</div>
+                        <div class="stat-title">Основных вопроса</div>
+                    </div>
+                </div>
+                <div class="thesis-stat-item">
+                    <div class="stat-badge">🔍</div>
+                    <div class="stat-text">
+                        <div class="stat-value">5</div>
+                        <div class="stat-title">Гипотез</div>
+                    </div>
+                </div>
+                <div class="thesis-stat-item">
+                    <div class="stat-badge">📊</div>
+                    <div class="stat-text">
+                        <div class="stat-value">4</div>
+                        <div class="stat-title">Методов сбора</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Filters section -->
-    <section class="filters">
+    <section class="filters" id="projects">
         <div class="filter-group">
-            <h3 class="filter-title">Семестры</h3>
+            <h3 class="filter-title">📚 Фильтр по семестрам</h3>
             <div class="filter-links">
                 {% for tag in TAGS %}
                     {% set formatted_tag = tag.split()[0] + '-semestr' %}
@@ -16,7 +198,7 @@
         </div>
         
         <div class="filter-group">
-            <h3 class="filter-title">Навыки и технологии</h3>
+            <h3 class="filter-title">🔧 Фильтр по технологиям</h3>
             <div class="filter-links">
                 {% for skill in SKILLS_TAGS %}
                     <a href="{{ SITEURL }}/{{ skill|transliterate_slug }}.html">{{ skill }}</a>
