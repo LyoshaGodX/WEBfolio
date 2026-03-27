@@ -2,6 +2,7 @@
 
 /* CSS Variables for consistent theming */
 :root {
+  color-scheme: light;
   --primary-color: #2c3e50;
   --secondary-color: #3498db;
   --accent-color: #e74c3c;
@@ -616,6 +617,7 @@ footer {
 /* Responsive design */
 @media (max-width: 768px) {
   :root {
+  color-scheme: light;
     --spacing-xl: 2rem;
     --spacing-lg: 1.5rem;
   }
@@ -724,8 +726,9 @@ footer {
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (prefers-color-scheme: light) {
   :root {
+  color-scheme: light;
     --primary-color: #3498db;
     --secondary-color: #2980b9;
     --accent-color: #e74c3c;

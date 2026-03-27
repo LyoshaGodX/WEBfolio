@@ -334,7 +334,7 @@ textarea:focus {
 }
 
 /* Dark theme enhancements */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) and (prefers-color-scheme: light) {
     .highlight {
         background: #1a1a1a;
         border-color: #333;
