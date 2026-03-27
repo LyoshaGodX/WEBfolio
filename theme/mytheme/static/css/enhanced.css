@@ -621,11 +621,6 @@
 }
 
 /* Theme toggle hover effects */
-.theme-toggle:hover {
-    transform: scale(1.1) rotate(360deg);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
 /* Enhanced animations */
 .animate-in {
     animation: slideInUp 0.6s ease-out;
@@ -884,11 +879,6 @@
     .copy-code-btn,
     .lightbox,
     .reading-progress,
-    .theme-toggle,
-    .back-to-top {
-        display: none !important;
-    }
-    
     .article-content {
         box-shadow: none !important;
         background: white !important;

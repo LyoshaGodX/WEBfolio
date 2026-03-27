@@ -157,8 +157,7 @@ textarea:focus {
     .copy-btn,
     .back-to-top,
     nav,
-    footer,
-    .theme-toggle {
+    footer {
         display: none !important;
     }
     
